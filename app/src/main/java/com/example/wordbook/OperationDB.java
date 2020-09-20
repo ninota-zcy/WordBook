@@ -3,6 +3,8 @@ package com.example.wordbook;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.wordbook.dummy.Words;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -24,11 +26,17 @@ public class OperationDB {
         }
     }
 
-    public Words.WordDescription getSingleWord(String id){ }
+    public Words.WordDescription getSingleWord(String id){
+        return null;
+    }
 
-    public ArrayList<Map<String,String>> getAllWord(){}
+    public ArrayList<Map<String,String>> getAllWord(){
+        return null;
+    }
 
-    public ArrayList<Map<String,String>> ConvertCursor2WordList(Cursor cursor){}
+    public ArrayList<Map<String,String>> ConvertCursor2WordList(Cursor cursor){
+        return null;
+    }
 
     public void InsertWord (String word, String meaning, String sample){}
 
@@ -40,8 +48,12 @@ public class OperationDB {
     public void UpdateUseSql(String strId, String strWord, String strMeaning, String strSample) {}
     public void Update(String strId, String strWord, String strMeaning, String strSample) { }
     //查找
-    public ArrayList<Map<String, String>> SearchUseSql(String strWordSearch) {}
-    public ArrayList<Map<String, String>> Search(String strWordSearch) {}
+    public ArrayList<Map<String, String>> SearchUseSql(String strWordSearch) {
+        return null;
+    }
+    public ArrayList<Map<String, String>> Search(String strWordSearch) {
+        return null;
+    }
 
 
 

@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.ListFragment;
 
+import com.example.wordbook.dummy.Words;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -88,11 +90,12 @@ public class WordListFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+        View view= inflater.inflate(R.layout.fragment_word_item, container, false);
     //为列表注册上下文菜单
         ListView mListView = (ListView) view.findViewById(android.R.id.list);
         mListView.setOnCreateContextMenuListener(this);
-        registerForContextMenu(mListView);    return view;
+        registerForContextMenu(mListView);
+        return view;
     }
         @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {

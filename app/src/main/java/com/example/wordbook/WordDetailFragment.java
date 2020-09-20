@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.wordbook.dummy.Words;
+
 public class WordDetailFragment extends Fragment {
     static final String ARG_ID = "id";
     String mID;

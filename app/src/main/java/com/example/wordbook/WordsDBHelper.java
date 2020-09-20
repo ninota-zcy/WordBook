@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.wordbook.dummy.Words;
+
 public class WordsDBHelper extends SQLiteOpenHelper {
 
     private final static String DATABASE_NAME = "wordsdb";//数据库名字

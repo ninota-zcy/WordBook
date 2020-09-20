@@ -1,4 +1,4 @@
-package com.example.wordbook;
+package com.example.wordbook.dummy;
 
 import android.provider.BaseColumns;
 
@@ -64,9 +64,7 @@ public class Words{
             this.sample = sample;
         }
 
-        public WordDescription() {
 
-        }
     }
 
 

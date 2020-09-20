@@ -8,10 +8,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableLayout;
+
+import com.example.wordbook.dummy.Words;
 
 public class MainActivity extends AppCompatActivity implements WordListFragment.OnFragmentInteractionListener,WordDetailFragment.OnFragmentInteractionListener{
     WordsDBHelper helper;
@@ -64,38 +65,46 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
         return false;
     }
 
+
     private void ChangeWordDetailFragment(String id){
         Bundle arguments = new Bundle();
         arguments.putString(WordDetailFragment.ARG_ID, id);
 
         WordDetailFragment fragment = new WordDetailFragment();
         fragment.setArguments(arguments);
-        getFragmentManager().beginTransaction().replace(R.id.worddetail, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.worddetail, fragment).commit();
     }
 
+    //新增对话框
     private void InsertDialog() {
         final TableLayout tableLayout = (TableLayout) getLayoutInflater().inflate(R.layout.insert, null);
-        new AlertDialog.Builder(this).setTitle("新增单词").setView(tableLayout).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String strWord = ((EditText) tableLayout.findViewById(R.id.txtWord)).getText().toString();
-                String strMeaning = ((EditText) tableLayout.findViewById(R.id.txtMeaning)).getText().toString();
-                String strSample = ((EditText) tableLayout.findViewById(R.id.txtSample)).getText().toString();
-                //既可以使用Sql语句插入，也可以使用使用insert方法插入
-                //InsertUserSql(strWord, strMeaning, strSample);
-                OperationDB wordsDB=OperationDB.getOperations();
-                wordsDB.Insert(strWord, strMeaning, strSample);
-                //单词已经插入到数据库，更新显示列表
-                RefreshWordItemFragment();
-            }
-        })
-        //取消按钮及其动作
-        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {           }
-        })
-                .create()//创建对话框
-                .show();//显示对话框}
+        new AlertDialog.Builder(this)
+                .setTitle("新增单词")//标题
+                .setView(tableLayout)//设置视图
+                //确定按钮及其动作
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String strWord = ((EditText) tableLayout.findViewById(R.id.txtWord)).getText().toString();
+                        String strMeaning = ((EditText) tableLayout.findViewById(R.id.txtMeaning)).getText().toString();
+                        String strSample = ((EditText) tableLayout.findViewById(R.id.txtSample)).getText().toString();
+
+                        //既可以使用Sql语句插入，也可以使用使用insert方法插入
+                        // InsertUserSql(strWord, strMeaning, strSample);
+                        OperationDB wordsDB=OperationDB.getOperations();
+                        wordsDB.Insert(strWord, strMeaning, strSample);
+
+                        //单词已经插入到数据库，更新显示列表
+                        RefreshWordItemFragment();
+                    }
+                })
+                //取消按钮及其动作
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {           }
+                })
+                .create()//创建对话框
+                .show();//显示对话框
     }
 
     //删除对话框
@@ -107,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
                        public void onClick(DialogInterface dialogInterface, int i) {
                         //既可以使用Sql语句删除，也可以使用使用delete方法删除
                         OperationDB wordsDB=OperationDB.getOperations();
-                        wordsDB.DeleteUseSql(strId);
+                        wordsDB.Delete(strId);
                         //单词已经删除，更新显示列表
                         RefreshWordItemFragment();
                     }
@@ -132,14 +141,15 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     String strNewWord = ((EditText) tableLayout.findViewById(R.id.txtWord)).getText().toString();
+
+                    String strNewMeaning = ((EditText) tableLayout.findViewById(R.id.txtMeaning)).getText().toString();
+                    String strNewSample = ((EditText) tableLayout.findViewById(R.id.txtSample)).getText().toString();
+                    //既可以使用Sql语句更新，也可以使用使用update方法更新
+                    OperationDB wordsDB=OperationDB.getOperations();
+                    wordsDB.UpdateUseSql(strId, strWord, strNewMeaning, strNewSample);
+                    //单词已经更新，更新显示列表
+                    RefreshWordItemFragment();
                 }
-                String strNewMeaning = ((EditText) tableLayout.findViewById(R.id.txtMeaning)).getText().toString();
-                String strNewSample = ((EditText) tableLayout.findViewById(R.id.txtSample)).getText().toString();
-                //既可以使用Sql语句更新，也可以使用使用update方法更新
-                OperationDB wordsDB=OperationDB.getOperations();
-                wordsDB.UpdateUseSql(strId, strWord, strNewMeaning, strNewSample);
-                //单词已经更新，更新显示列表
-                RefreshWordItemFragment();
 
     })
     //取消按钮及其动作
@@ -185,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
      * 更新单词列表
      */
     private void RefreshWordItemFragment() {
-        WordListFragment wordItemFragment = (WordListFragment) getFragmentManager()
+        WordListFragment wordItemFragment = (WordListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.wordslist);
         wordItemFragment.refreshWordsList();
     }
@@ -194,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
      * 更新单词列表
      */
     private void RefreshWordItemFragment(String strWord) {
-        WordListFragment wordItemFragment = (WordListFragment) getFragmentManager()
+        WordListFragment wordItemFragment = (WordListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.wordslist);
         wordItemFragment.refreshWordsList();
     }
