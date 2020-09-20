@@ -57,12 +57,15 @@ public class OperationDB {
         ArrayList<Map<String,String>> list = new ArrayList<Map<String, String>>();
         if(cursor.moveToFirst()){
             Map<String,String> map = new HashMap<String,String>();
-            map.put(cursor.getColumnName("id"), cursor.getColumnName("word"));
+            map.put(cursor.getString(cursor.getColumnIndex("_id")), cursor.getString(cursor.getColumnIndex("word")));
+            list.add(map);
         }
-        return null;
+        return list;
     }
 
-    public void InsertWord (String word, String meaning, String sample){}
+    public void InsertWord (String word, String meaning, String sample){
+
+    }
 
     public void Insert(String word, String meaning, String sample){}
 
