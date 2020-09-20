@@ -10,19 +10,19 @@ import com.example.wordbook.dummy.Words;
 
 public class WordsDBHelper extends SQLiteOpenHelper {
 
-    private final static String DATABASE_NAME = "wordsdb";//数据库名字
+    private final static String DATABASE_NAME= "wordsdb";//数据库名字
     private final static int DATABASE_VERSION = 1;//数据库版本
     //建表语句
-    private final static String SQL_CREATE_DATABASE = "CREATE TABLE "
-			 + Words.Word.TABLE_NAME + " (" +  Words.Word._ID +
-            " INTEGER PRIMARY KEY AUTOINCREMENT," +  Words.Word.COLUMN_NAME_WORD +
-            " TEXT" + "," +  Words.Word.COLUMN_NAME_MEANING + " TEXT" + ","
-            + Words.Word.COLUMN_NAME_SAMPLE + " TEXT" + " )";
+    private final static String SQL_CREATE_DATABASE = "CREATE TABLE " + Words.Word.TABLE_NAME + " (" +
+            Words.Word._ID + " VARCHAR(32) PRIMARY KEY NOT NULL," +
+            Words.Word.COLUMN_NAME_WORD + " TEXT UNIQUE NOT NULL,"+
+            Words.Word.COLUMN_NAME_MEANING + " TEXT,"
+            + Words.Word.COLUMN_NAME_SAMPLE + " TEXT)";
     //删表语句
     private final static String SQL_DELETE_DATABASE = "DROP TABLE IF EXISTS " + Words.Word.TABLE_NAME;
 
-    public WordsDBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public WordsDBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

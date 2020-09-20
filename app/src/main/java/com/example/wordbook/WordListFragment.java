@@ -62,7 +62,6 @@ public class WordListFragment extends ListFragment {
         if (operationDB != null) {
             ArrayList<Map<String, String>> items = operationDB.SearchUseSql(strWord);
             if(items.size()>0){
-
                 SimpleAdapter adapter = new SimpleAdapter(getActivity(), items, R.layout.item,
                         new String[]{Words.Word._ID, Words.Word.COLUMN_NAME_WORD},
                         new int[]{R.id.textId, R.id.textViewWord});
@@ -90,7 +89,7 @@ public class WordListFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_word_item, container, false);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
     //为列表注册上下文菜单
         ListView mListView = (ListView) view.findViewById(android.R.id.list);
         mListView.setOnCreateContextMenuListener(this);

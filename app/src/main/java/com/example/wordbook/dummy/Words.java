@@ -23,6 +23,7 @@ public class Words{
         public String id;
         public String word;
         public String meaning;
+        public String sample;
 
         public String getId() {
             return id;
@@ -56,14 +57,16 @@ public class Words{
             this.id = id;
         }
 
-        public String sample;
+
         public WordDescription(String id, String word,String meaning, String sample) {
             this.id = id;
             this.word = word;
             this.meaning = meaning;
             this.sample = sample;
         }
+        public WordDescription(){
 
+        }
 
     }
 
