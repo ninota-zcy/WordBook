@@ -25,7 +25,7 @@ public class WordListFragment extends ListFragment {
     private OnFragmentInteractionListener mListener;
 
     @Override
-    public void onAttach(@NonNull Context context) {
+    public void onAttach( Context context) {
         super.onAttach(context);
         mListener = (OnFragmentInteractionListener)getActivity();
     }
@@ -46,6 +46,11 @@ public class WordListFragment extends ListFragment {
         OperationDB operationDB = OperationDB.getOperations();
         if(operationDB != null){
             ArrayList<Map<String,String>> items = operationDB.getAllWord();
+            System.out.println("dsl"+items.size());
+            for(int i=0; i<items.size(); i++){
+                System.out.println("dsl"+items.get(i));
+            }
+
             SimpleAdapter adapter = new SimpleAdapter(getActivity(),items,R.layout.item,
                     new String[]{Words.Word._ID, Words.Word.COLUMN_NAME_WORD},
                     new int[]{R.id.textId, R.id.textViewWord});
@@ -56,12 +61,22 @@ public class WordListFragment extends ListFragment {
 
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //刷新单词列表
+        refreshWordsList();
+    }
+
+
     //更新单词列表，从数据库中找到同strWord向匹配的单词，然后在列表中显示出来
     public void refreshWordsList(String strWord) {
         OperationDB operationDB = OperationDB.getOperations();
         if (operationDB != null) {
             ArrayList<Map<String, String>> items = operationDB.SearchUseSql(strWord);
             if(items.size()>0){
+
                 SimpleAdapter adapter = new SimpleAdapter(getActivity(), items, R.layout.item,
                         new String[]{Words.Word._ID, Words.Word.COLUMN_NAME_WORD},
                         new int[]{R.id.textId, R.id.textViewWord});
@@ -71,6 +86,7 @@ public class WordListFragment extends ListFragment {
                 Toast.makeText(getActivity(),"Not found",Toast.LENGTH_LONG).show();
             }
         }
+
     }
 
 

@@ -1,13 +1,20 @@
 package com.example.wordbook;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -17,12 +24,33 @@ import com.example.wordbook.dummy.Words;
 public class MainActivity extends AppCompatActivity implements WordListFragment.OnFragmentInteractionListener,WordDetailFragment.OnFragmentInteractionListener{
     WordsDBHelper helper;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView list = (ListView) findViewById(R.id.lstWords);
+        helper = new WordsDBHelper(this);
+        helper.getReadableDatabase();
+        //SQLiteDatabase db= SQLiteDatabase.openOrCreateDatabase("mydb",null);
+
+        Button insert = findViewById(R.id.insert);
+        insert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InsertDialog();
+            }
+        });
+
+        Button search = findViewById(R.id.search);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchDialog();
+            }
+        });
+        helper.close();
 
     }
 
@@ -31,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
         if(isLand()){
             ChangeWordDetailFragment(id);
         }else{
-            Intent intent = new Intent(MainActivity.this,WordDetailFragment.class);
+            Intent intent = new Intent(MainActivity.this,WordDetailActivity.class);
             intent.putExtra(WordDetailFragment.ARG_ID,id);
             startActivity(intent);
         }
@@ -76,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
     }
 
     //新增对话框
-    private void InsertDialog() {
+    public void InsertDialog() {
         final TableLayout tableLayout = (TableLayout) getLayoutInflater().inflate(R.layout.insert, null);
         new AlertDialog.Builder(this)
                 .setTitle("新增单词")//标题
@@ -89,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
                         String strMeaning = ((EditText) tableLayout.findViewById(R.id.txtMeaning)).getText().toString();
                         String strSample = ((EditText) tableLayout.findViewById(R.id.txtSample)).getText().toString();
 
+                        Log.v("test",strWord+":"+strMeaning+":"+strSample);
                         //既可以使用Sql语句插入，也可以使用使用insert方法插入
                         // InsertUserSql(strWord, strMeaning, strSample);
                         OperationDB wordsDB=OperationDB.getOperations();
@@ -174,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String txtSearchWord = ((EditText) tableLayout.findViewById(R.id.txtSearchWord))
+                        String txtSearchWord = ((EditText) tableLayout.findViewById(R.id.searchWord))
                                 .getText().toString();
 
                         //单词已经插入到数据库，更新显示列表

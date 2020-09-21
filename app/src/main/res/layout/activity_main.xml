@@ -10,20 +10,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
-        <ListView
-            android:id="@+id/lstWords"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+
         <fragment
             android:id="@+id/wordslist"
+            android:name="com.example.wordbook.WordListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="4"
             />
         <fragment
             android:id="@+id/worddetail"
+            android:name="com.example.wordbook.WordDetailFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="2"
             />
 
+
     </LinearLayout>
+    <Button
+        android:text="搜索"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/search"
+        app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintRight_toLeftOf="@id/insert"
+        />
+    <Button
+        android:text="添加"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/insert"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
