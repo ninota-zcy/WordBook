@@ -49,18 +49,23 @@ public class OperationDB {
     public ArrayList<Map<String,String>> getAllWord(){
         SQLiteDatabase db = helper.getReadableDatabase();
         String sql = "select * from words ";
-        Cursor cursor = db.rawQuery(sql,new String[]{null});
+        Cursor cursor = db.rawQuery(sql,null);
         return ConvertCursorToWordList(cursor);
     }
 
-    //前者为id，后者为Word
+    //疑难
     public ArrayList<Map<String,String>> ConvertCursorToWordList(Cursor cursor){
         ArrayList<Map<String,String>> list = new ArrayList<Map<String, String>>();
-        if(cursor.moveToFirst()){
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             Map<String,String> map = new HashMap<String,String>();
-            System.out.println("dsl:"+cursor.getString(cursor.getColumnIndex("_id"))+ cursor.getString(cursor.getColumnIndex("word")));
-            map.put(cursor.getString(cursor.getColumnIndex("_id")), cursor.getString(cursor.getColumnIndex("word")));
+            System.out.println("dsl:"+cursor.getString(cursor.getColumnIndex("_id"))+ "word:"+cursor.getString(cursor.getColumnIndex("word")));
+            map.put(Words.Word._ID, cursor.getString(cursor.getColumnIndex("_id")));
+            map.put(Words.Word.COLUMN_NAME_WORD, cursor.getString(cursor.getColumnIndex("word")));
             list.add(map);
+        }
+
+        if(cursor.moveToFirst()){
+
         }
         return list;
     }

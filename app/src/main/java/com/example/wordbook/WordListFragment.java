@@ -47,10 +47,10 @@ public class WordListFragment extends ListFragment {
         if(operationDB != null){
             ArrayList<Map<String,String>> items = operationDB.getAllWord();
             System.out.println("dsl"+items.size());
-            for(int i=0; i<items.size(); i++){
-                System.out.println("dsl"+items.get(i));
-            }
-
+//            for(int i=0; i<items.size(); i++){
+//                System.out.println("dsl"+items.get(i));
+//            }
+//疑难
             SimpleAdapter adapter = new SimpleAdapter(getActivity(),items,R.layout.item,
                     new String[]{Words.Word._ID, Words.Word.COLUMN_NAME_WORD},
                     new int[]{R.id.textId, R.id.textViewWord});
