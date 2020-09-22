@@ -40,8 +40,10 @@ public class OperationDB {
             result.setWord(cursor.getString(cursor.getColumnIndex("word")));
             result.setMeaning(cursor.getString(cursor.getColumnIndex("meaning")));
             result.setSample(cursor.getString(cursor.getColumnIndex("sample")));
+            System.out.println("result: "+result.getWord());
             return result;
         }
+
         return null;
 
     }

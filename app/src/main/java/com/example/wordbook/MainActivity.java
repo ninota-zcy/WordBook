@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -21,35 +22,71 @@ import android.widget.TableLayout;
 
 import com.example.wordbook.dummy.Words;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements WordListFragment.OnFragmentInteractionListener,WordDetailFragment.OnFragmentInteractionListener{
     WordsDBHelper helper;
 
+    public static List<Activity> activityList = new LinkedList();
+    private static final String TAG = "text";
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.caidan,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()){
+            case R.id.all:{
+                RefreshWordItemFragment();
+                break;
+            }
+            case R.id.search:{
+                SearchDialog();
+                break;
+            }
+            case R.id.add:{
+                InsertDialog();
+                break;
+            }
+            case R.id.help:{
+                Intent intent = new Intent(MainActivity.this,Help.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.exit:{
+                exit();
+            }
+        }
+        return false;
+    }
+    public void exit(){
+
+        for(Activity act:activityList){
+
+            act.finish();
+
+        }
+
+        System.exit(0);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        activityList.add(this);
         helper = new WordsDBHelper(this);
         helper.getReadableDatabase();
         //SQLiteDatabase db= SQLiteDatabase.openOrCreateDatabase("mydb",null);
 
-        Button insert = findViewById(R.id.insert);
-        insert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InsertDialog();
-            }
-        });
 
-        Button search = findViewById(R.id.search);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SearchDialog();
-            }
-        });
         helper.close();
 
     }
@@ -175,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
                     String strNewSample = ((EditText) tableLayout.findViewById(R.id.txtSample)).getText().toString();
                     //既可以使用Sql语句更新，也可以使用使用update方法更新
                     OperationDB wordsDB=OperationDB.getOperations();
-                    wordsDB.UpdateUseSql(strId, strWord, strNewMeaning, strNewSample);
+                    wordsDB.UpdateUseSql(strId, strNewWord, strNewMeaning, strNewSample);
                     //单词已经更新，更新显示列表
                     RefreshWordItemFragment();
                 }
@@ -235,7 +272,8 @@ public class MainActivity extends AppCompatActivity implements WordListFragment.
     private void RefreshWordItemFragment(String strWord) {
         WordListFragment wordItemFragment = (WordListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.wordslist);
-        wordItemFragment.refreshWordsList();
+        wordItemFragment.refreshWordsList(strWord);
+
     }
 
 

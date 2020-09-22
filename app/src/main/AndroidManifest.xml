@@ -10,14 +10,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".WordDetailActivity">
+        <provider
+            android:name=".WordsProvider"
+            android:authorities="cn.edu.bistu.cs.se.wordsprovider"
+            android:enabled="true"
+            android:exported="true"></provider>
 
-        </activity>
         <activity
-            android:name=".MainActivity"
-
-            >
+            android:name=".Help"
+            android:label="@string/title_activity_help"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".WordDetailActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
