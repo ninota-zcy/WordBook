@@ -24,6 +24,7 @@ public class WordsDBHelper extends SQLiteOpenHelper {
     //删表语句
     private final static String SQL_DELETE_DATABASE = "DROP TABLE IF EXISTS " + Words.Word.TABLE_NAME;
 
+
     public WordsDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

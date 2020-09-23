@@ -3,6 +3,7 @@ package com.example.wordbook;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -18,15 +19,14 @@ public class WordsProvider extends ContentProvider {
     private static final int SINGLE_WORD = 2;
 
     WordsDBHelper helper ;
+    SQLiteDatabase db;
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        uriMatcher.addURI(Words.Word.AUTHORITY, Words.Word.PATH_SINGLE, SINGLE_WORD);
-        uriMatcher.addURI(Words.Word.AUTHORITY, Words.Word.PATH_MULTIPLE, MULTIPLE_WORDS);
+        uriMatcher.addURI(Words.AUTHORITY, Words.Word.PATH_SINGLE, SINGLE_WORD);
+        uriMatcher.addURI(Words.AUTHORITY, Words.Word.PATH_MULTIPLE, MULTIPLE_WORDS);
     }
 
-    public WordsProvider() {
-    }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
@@ -82,15 +82,20 @@ public class WordsProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        // TODO: Implement this to initialize your content provider on startup.
-        return false;
+        Context context = getContext();
+        helper = new WordsDBHelper(context);
+
+        /**
+         * 如果不存在，则创建一个可写的数据库。
+         */
+        db = helper.getWritableDatabase();
+        return (db == null)? false:true;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         // TODO: Implement this to handle query requests from clients.
-        SQLiteDatabase db = helper.getReadableDatabase();
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(Words.Word.TABLE_NAME);
@@ -104,7 +109,7 @@ public class WordsProvider extends ContentProvider {
                 return qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 
             default:
-                throw new IllegalArgumentException("Unkonwn Uri:" + uri);
+                throw new IllegalArgumentException("Unknown Uri:" + uri);
         }
     }
 
@@ -123,7 +128,7 @@ public class WordsProvider extends ContentProvider {
                 count = db.update(Words.Word.TABLE_NAME, values, Words.Word._ID+"="+segment, selectionArgs);
                 break;
             default:
-                throw new IllegalArgumentException("Unkonwn Uri:" + uri);
+                throw new IllegalArgumentException("Unknown Uri:" + uri);
         }
 
         //通知ContentResolver,数据已经发生改变

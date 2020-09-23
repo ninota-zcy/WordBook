@@ -66,9 +66,7 @@ public class OperationDB {
             list.add(map);
         }
 
-        if(cursor.moveToFirst()){
 
-        }
         return list;
     }
 

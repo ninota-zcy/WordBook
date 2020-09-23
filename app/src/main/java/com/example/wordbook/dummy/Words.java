@@ -71,9 +71,9 @@ public class Words{
 
     }
 
-
+    public static final String AUTHORITY = "cn.edu.bistu.cs.se.wordsprovider";//URI授权
     public static abstract class Word implements BaseColumns {
-        public static final String AUTHORITY = "cn.edu.bistu.cs.se.wordsprovider";//URI授权
+
         public static final String TABLE_NAME = "words";//表名
         // _ID字段：主键，从接口BaseColumn而来
         public static final String COLUMN_NAME_WORD = "word";//字段：单词

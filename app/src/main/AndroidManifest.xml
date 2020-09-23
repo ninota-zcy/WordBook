@@ -14,7 +14,9 @@
             android:name=".WordsProvider"
             android:authorities="cn.edu.bistu.cs.se.wordsprovider"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true">
+
+        </provider>
 
         <activity
             android:name=".Help"
